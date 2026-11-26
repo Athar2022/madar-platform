@@ -2,7 +2,7 @@
 import { watch } from 'vue'
 import { useStudentAccounts } from '@/composables/useStudentAccounts'
 import AccountSelectionView from '@/views/AccountSelectionView.vue'
-import StudentWelcome from '@/components/StudentWelcome.vue'
+import StudentDashboardView from '@/views/StudentDashboardView.vue'
 
 const {
   students,
@@ -18,7 +18,7 @@ watch(
   selectedStudent,
   (student) => {
     document.title = student
-      ? `مدار | أهلاً بك ${student.fullName}`
+      ? `مدار | لوحة الطالب - ${student.fullName}`
       : 'مدار | اختيار حساب الطالب'
   },
   { immediate: true },
@@ -26,7 +26,7 @@ watch(
 </script>
 
 <template>
-  <StudentWelcome
+  <StudentDashboardView
     v-if="selectedStudent"
     :student="selectedStudent"
     @back="clearSelection"
