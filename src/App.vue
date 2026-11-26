@@ -1,11 +1,43 @@
-<script setup></script>
+<script setup>
+import { watch } from 'vue'
+import { useStudentAccounts } from '@/composables/useStudentAccounts'
+import AccountSelectionView from '@/views/AccountSelectionView.vue'
+import StudentWelcome from '@/components/StudentWelcome.vue'
+
+const {
+  students,
+  selectedStudent,
+  addStudent,
+  updateStudent,
+  deleteStudent,
+  selectStudent,
+  clearSelection,
+} = useStudentAccounts()
+
+watch(
+  selectedStudent,
+  (student) => {
+    document.title = student
+      ? `مدار | أهلاً بك ${student.fullName}`
+      : 'مدار | اختيار حساب الطالب'
+  },
+  { immediate: true },
+)
+</script>
 
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-slate-100">
-    <h1 class="text-3xl font-bold text-emerald-600">
-      Tailwind يعمل مع Vue بنجاح!
-    </h1>
-  </div>
-</template>
+  <StudentWelcome
+    v-if="selectedStudent"
+    :student="selectedStudent"
+    @back="clearSelection"
+  />
 
-<style scoped></style>
+  <AccountSelectionView
+    v-else
+    :students="students"
+    @select="selectStudent"
+    @add="addStudent"
+    @update="updateStudent"
+    @delete="deleteStudent"
+  />
+</template>
